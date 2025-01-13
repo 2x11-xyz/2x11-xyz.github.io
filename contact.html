@@ -1,0 +1,145 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Contact - Algorithmic Productions</title>
+        <link rel="stylesheet" href="css/styles.css" />
+    </head>
+    <body>
+        <div class="div1">
+            <a href="index.html" class="logo">
+                <img src="assets/2x11.svg" alt="2x11" class="nav-logo" />
+            </a>
+            <nav>
+                <a href="about.html">About</a>
+                <a href="contact.html">Contact</a>
+            </nav>
+        </div>
+
+        <div class="page-content">
+            <section>
+                <h1>Contact Us</h1>
+                <p id="intro-text">
+                    Get in touch with us to learn more about our work or discuss
+                    potential collaborations.
+                </p>
+            </section>
+
+            <div id="contact-form-container">
+                <form
+                    class="contact-form"
+                    id="contact-form"
+                    method="POST"
+                    action="https://formspree.io/f/mnnnwvjz"
+                >
+                    <div class="form-group">
+                        <label for="name">Name</label>
+                        <input type="text" id="name" name="name" required />
+                    </div>
+
+                    <div class="form-group">
+                        <label for="email">Email</label>
+                        <input type="email" id="email" name="email" required />
+                    </div>
+
+                    <div class="form-group">
+                        <label for="message">Message</label>
+                        <textarea
+                            id="message"
+                            name="message"
+                            required
+                        ></textarea>
+                    </div>
+
+                    <button type="submit">Send Message</button>
+                </form>
+                <div
+                    id="form-message"
+                    style="
+                        display: none;
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+                        height: 100vh;
+                    "
+                >
+                    <div style="border: 1px solid #000; padding: 10px">
+                        <div style="border: 1px solid #000; padding: 5px">
+                            <p
+                                style="
+                                    text-align: center;
+                                    margin-bottom: 24px;
+                                    margin-top: 24px;
+                                "
+                            >
+                                Thanks for getting in contact and we will follow
+                                up shortly!
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <script>
+            document
+                .getElementById("contact-form")
+                .addEventListener("submit", function (e) {
+                    e.preventDefault(); // Prevent default form submission
+
+                    // Gather the form data
+                    const form = e.target;
+                    const formData = new FormData(form);
+
+                    // Send the form data to Formspree
+                    fetch(form.action, {
+                        method: "POST",
+                        headers: {
+                            Accept: "application/json",
+                        },
+                        body: formData,
+                    })
+                        .then((response) => {
+                            if (response.ok) {
+                                // Hide the form
+                                document.getElementById(
+                                    "contact-form",
+                                ).style.display = "none";
+                                // Hide the intro text
+                                document.getElementById(
+                                    "intro-text",
+                                ).style.display = "none";
+                                // Show the message
+                                document.getElementById(
+                                    "form-message",
+                                ).style.display = "block";
+                            } else {
+                                response.json().then((data) => {
+                                    if (Object.hasOwn(data, "errors")) {
+                                        alert(
+                                            "There was a problem submitting your form:\n" +
+                                                data["errors"]
+                                                    .map(
+                                                        (error) =>
+                                                            error["message"],
+                                                    )
+                                                    .join("\n"),
+                                        );
+                                    } else {
+                                        alert(
+                                            "Oops! There was a problem submitting your form",
+                                        );
+                                    }
+                                });
+                            }
+                        })
+                        .catch((error) => {
+                            alert(
+                                "Oops! There was a problem submitting your form",
+                            );
+                        });
+                });
+        </script>
+    </body>
+</html>
